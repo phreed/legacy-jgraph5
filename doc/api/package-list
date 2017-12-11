@@ -1,16 +1,3 @@
-com.jgraph.algebra
-com.jgraph.algebra.cost
-com.jgraph.components.labels
-com.jgraph.io.svg
-com.jgraph.layout
-com.jgraph.layout.graph
-com.jgraph.layout.hierarchical
-com.jgraph.layout.organic
-com.jgraph.layout.routing
-com.jgraph.layout.simple
-com.jgraph.layout.tree
-com.jgraph.navigation
-com.jgraph.util
 org.jgraph
 org.jgraph.event
 org.jgraph.graph

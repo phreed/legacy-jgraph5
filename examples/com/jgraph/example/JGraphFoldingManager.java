@@ -1,5 +1,5 @@
 /*
- * $Id: JGraphFoldingManager.java,v 1.2 2006-05-11 17:11:25 david Exp $
+ * $Id: JGraphFoldingManager.java,v 1.2 2006/05/11 17:11:25 david Exp $
  * Copyright (c) 2001-2005, Gaudenz Alder
  * 
  * All rights reserved. 

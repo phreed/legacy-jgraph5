@@ -1,5 +1,5 @@
 /*
- * $Id: JGraphSQLBackend.java,v 1.1.1.1 2005-08-06 05:26:45 gaudenz Exp $
+ * $Id: JGraphSQLBackend.java,v 1.1.1.1 2005/08/06 05:26:45 gaudenz Exp $
  * 
  * Copyright (c) 2001-2005, Gaudenz Alder
  * 

@@ -1,7 +1,7 @@
 /*
- * $Id: DefaultGraphModel.java,v 1.25 2009-06-12 13:58:33 david Exp $
+ * $Id: DefaultGraphModel.java,v 1.24 2008/11/12 23:33:37 david Exp $
  * 
- * Copyright (c) 2001-2009 Gaudenz Alder
+ * Copyright (c) 2001-2008 Gaudenz Alder
  *  
  */
 package org.jgraph.graph;
@@ -78,38 +78,15 @@ public class DefaultGraphModel extends UndoableEditSupport implements
 	protected AttributeMap attributes = null;
 
 	/**
-	 * Counter for the depth of nested transactions. Each call to beginUpdate
-	 * increments this counter and each call to endUpdate decrements it. When
-	 * the counter reaches 0, the transaction is closed and applied to the 
-	 * model.
+	 * A collection of unexecuted updates on this model
 	 */
-	protected transient int updateLevel = 0;
+//	protected Collection currentUpdate = new ArrayList();
 
 	/**
-	 * Stores nested transaction added cells
+	 * Whether or not an update is in the process of being dispatched
 	 */
-	protected transient Set transAddedCells = null;
-	
-	/**
-	 * Stores nested transaction removed cells
-	 */
-	protected transient Set transRemovedCells = null;
-	
-	/**
-	 * Stores nested transaction transport attribute maps
-	 */
-	protected transient Map transEditAttrs = null;
-	
-	/**
-	 * Stores nested transaction connection sets
-	 */
-	protected transient ConnectionSet transEditCS = null;
-	
-	/**
-	 * Stores nested transaction parent maps
-	 */
-	protected transient ParentMap transEditPM = null;
-	
+//	private transient boolean isDispatching = false;
+
 	/**
 	 * Constructs a model that is not an attribute store.
 	 */
@@ -502,22 +479,16 @@ public class DefaultGraphModel extends UndoableEditSupport implements
 	 */
 	public void insert(Object[] roots, Map attributes, ConnectionSet cs,
 			ParentMap pm, UndoableEdit[] edits) {
-		if (updateLevel > 0) {
-			// Store the insert in the current transaction
-			updateTransaction(roots, null, attributes, cs, pm);
-		} else {
-			// Implement the insert immediately
-			GraphModelEdit edit = createEdit(roots, null, attributes, cs, pm, edits);
-			if (edit != null) {
-				edit.execute(); // fires graphChangeEvent
-				if (edits != null) {
-					for (int i = 0; i < edits.length; i++)
-						if (edits[i] instanceof GraphLayoutCache.GraphLayoutCacheEdit)
-							((GraphLayoutCache.GraphLayoutCacheEdit) edits[i])
-									.execute();
-				}
-				postEdit(edit); // fires undoableedithappened
+		GraphModelEdit edit = createEdit(roots, null, attributes, cs, pm, edits);
+		if (edit != null) {
+			edit.execute(); // fires graphChangeEvent
+			if (edits != null) {
+				for (int i = 0; i < edits.length; i++)
+					if (edits[i] instanceof GraphLayoutCache.GraphLayoutCacheEdit)
+						((GraphLayoutCache.GraphLayoutCacheEdit) edits[i])
+								.execute();
 			}
+			postEdit(edit); // fires undoableedithappened
 		}
 	}
 
@@ -526,15 +497,10 @@ public class DefaultGraphModel extends UndoableEditSupport implements
 	 * listeners of the change.
 	 */
 	public void remove(Object[] roots) {
-		if (updateLevel > 0) {
-			// Store the insert in the current transaction
-			updateTransaction(null, roots, null, null, null);
-		} else {
-			GraphModelEdit edit = createRemoveEdit(roots);
-			if (edit != null) {
-				edit.execute();
-				postEdit(edit);
-			}
+		GraphModelEdit edit = createRemoveEdit(roots);
+		if (edit != null) {
+			edit.execute();
+			postEdit(edit);
 		}
 	}
 
@@ -561,142 +527,89 @@ public class DefaultGraphModel extends UndoableEditSupport implements
 	 */
 	public void edit(Object[] inserted, Object[] removed, Map attributes,
 			ConnectionSet cs, ParentMap pm, UndoableEdit[] edits) {
-		if (updateLevel > 0) {
-			// Store the insert in the current transaction
-			updateTransaction(inserted, removed, attributes, cs, pm);
+		if ((inserted == null || inserted.length == 0)
+				&& (removed == null || removed.length == 0)
+				&& (attributes == null || attributes.isEmpty())
+				&& (cs == null || cs.isEmpty()) && pm == null && edits != null
+				&& edits.length == 1) {
+			if (edits[0] instanceof GraphLayoutCache.GraphLayoutCacheEdit)
+				((GraphLayoutCache.GraphLayoutCacheEdit) edits[0]).execute();
+			postEdit(edits[0]); // UndoableEdit Relay
 		} else {
-			if ((inserted == null || inserted.length == 0)
-					&& (removed == null || removed.length == 0)
-					&& (attributes == null || attributes.isEmpty())
-					&& (cs == null || cs.isEmpty()) && pm == null && edits != null
-					&& edits.length == 1) {
-				if (edits[0] instanceof GraphLayoutCache.GraphLayoutCacheEdit)
-					((GraphLayoutCache.GraphLayoutCacheEdit) edits[0]).execute();
-				postEdit(edits[0]); // UndoableEdit Relay
-			} else {
-				GraphModelEdit edit = createEdit(inserted, removed, attributes, cs,
-						pm, edits);
-				if (edit != null) {
-					edit.execute();
-					if (edits != null) {
-						for (int i = 0; i < edits.length; i++)
-							if (edits[i] instanceof GraphLayoutCache.GraphLayoutCacheEdit)
-								((GraphLayoutCache.GraphLayoutCacheEdit) edits[i])
-								.execute();
-					}
-					postEdit(edit);
+			GraphModelEdit edit = createEdit(inserted, removed, attributes, cs,
+					pm, edits);
+			if (edit != null) {
+				edit.execute();
+				if (edits != null) {
+					for (int i = 0; i < edits.length; i++)
+						if (edits[i] instanceof GraphLayoutCache.GraphLayoutCacheEdit)
+							((GraphLayoutCache.GraphLayoutCacheEdit) edits[i])
+									.execute();
 				}
+				postEdit(edit);
 			}
 		}
 	}
 
 	/*
-	 * Unused, placeholder for JGraph 6 API
+	 * (non-Javadoc)
+	 * 
+	 * @see com.jgraph.model.GraphModel#execute(com.jgraph.model.DefaultGraphModel.Change)
 	 */
 	public synchronized void execute(ExecutableChange change) {
+//		change.execute();
+//		beginUpdate();
+//		currentUpdate.add(change);
+//		endUpdate();
 	}
 
 	/*
-	 * Read section entitled "Complex Transactions" in the user manual
-	 * chapter 2 for how to use the update level
+	 * (non-Javadoc)
+	 * 
+	 * @see com.jgraph.model.GraphModel#getUpdateLevel()
 	 */
 	public int getUpdateLevel() {
-		return updateLevel;
+		return super.getUpdateLevel();
+		//return updateLevel;
 	}
 
 	/*
-	 * Read section entitled "Complex Transactions" in the user manual
-	 * chapter 2 for how to use the update level
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.undo.UndoableEditSupport#beginUpdate()
 	 */
 	public void beginUpdate() {
-		updateLevel++;
-		if (updateLevel == 1) {
-			transEditAttrs = new Hashtable();
-			transEditCS = new ConnectionSet();
-			transEditPM = new ParentMap();
-			transAddedCells = new HashSet();
-			transRemovedCells = new HashSet();
-		}
+		super.beginUpdate();
+		//updateLevel++;
 	}
 
 	/*
-	 * Read section entitled "Complex Transactions" in the user manual
-	 * chapter 2 for how to use the update level
+	 * (non-Javadoc)
+	 * 
+	 * @see com.jgraph.model.GraphModel#endUpdate()
 	 */
-	public void endUpdate()
-	{
-		updateLevel--;
-
-		if (updateLevel == 0)
-		{
-			// Dispatch the built up transaction
-			GraphModelEdit edit = createEdit(transAddedCells.toArray(),
-					transRemovedCells.toArray(), transEditAttrs, transEditCS,
-					transEditPM, null);
-			if (edit != null)
-			{
-				edit.execute(); // fires graphChangeEvent
-				postEdit(edit); // fires undoableedithappened
-			}
-		}
-	}
-
-	/**
-	 * Updates the current state of the various transaction data
-	 * @param inserted inserted cell to be added to the transaction
-	 * @param removed removed cells to be removed from the transaction
-	 * @param attributes nested attribute maps to apply to the transaction
-	 * @param cs connection sets to add to the transaction
-	 * @param pm parent maps to add to the transaction
-	 */
-	protected void updateTransaction(Object[] inserted, Object[] removed, Map attributes,
-			ConnectionSet cs, ParentMap pm)
-	{
-		// Inserts
-		if (inserted != null && inserted.length > 0) {
-			for (int i = 0; i < inserted.length; i++) {
-				if (transRemovedCells.contains(inserted[i])) {
-					// Does not make sense to remove then insert a cell
-					// in same transaction, operations cancel out
-					transRemovedCells.remove(inserted[i]);
-				} else {
-					transAddedCells.add(inserted[i]);
-				}
-			}
-		}
-		// Removes
-		if (removed != null && removed.length > 0) {
-			for (int i = 0; i < removed.length; i++) {
-				if (transAddedCells.contains(removed[i])) {
-					// Does not make sense to insert then remove a cell
-					// in same transaction, operations cancel out
-					transAddedCells.remove(removed[i]);
-				} else {
-					transRemovedCells.add(removed[i]);
-				}
-			}
-		}
-		// Attributes
-		if (attributes != null) {
-			GraphConstants.merge(attributes, transEditAttrs);
-		}
-		// Connection sets
-		if (cs != null) {
-			Set connections = transEditCS.getConnections();
-			connections.addAll(cs.getConnections());
-			transEditCS.setConnections(connections);
-			Set edges = transEditCS.getEdges();
-			edges.addAll(cs.getEdges());
-			transEditCS.setEdges(edges);
-		}
-		// Parent maps
-		if (pm != null) {
-			Iterator entries = pm.entries();
-			while (entries.hasNext()) {
-				ParentMap.Entry entry = (ParentMap.Entry)entries.next();
-				transEditPM.addEntry(entry.getChild(), entry.getParent());
-			}
-		}
+	public void endUpdate() {
+		super.endUpdate();
+//		boolean dispatch = false;
+//		synchronized (this) {
+//			updateLevel--;
+//			if (!isDispatching && updateLevel == 0) {
+//				dispatch = true;
+//				isDispatching = true;
+//			}
+//		}
+//		if (dispatch) {
+//			try {
+//				if (!currentUpdate.isEmpty()) {
+//					Collection changes = new ArrayList(currentUpdate);
+//					currentUpdate.clear();
+//					undoSupport
+//							.postEdit(createEdit(processGraphChanges(changes)));
+//				}
+//			} finally {
+//				isDispatching = false;
+//			}
+//		}
 	}
 
 	/**

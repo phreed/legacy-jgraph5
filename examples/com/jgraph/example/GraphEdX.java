@@ -147,6 +147,9 @@ public class GraphEdX extends GraphEd {
 		GraphModel model = new MyGraphModel();
 		GraphLayoutCache layoutCache = new GraphLayoutCache(model,
 				new DefaultCellViewFactory(), true);
+		Set locals = new HashSet();
+		locals.add(GraphConstants.BOUNDS);
+		layoutCache.setLocalAttributes(locals);
 		return new MyGraph(model, layoutCache);
 	}
 
@@ -237,7 +240,7 @@ public class GraphEdX extends GraphEd {
 	public Map createEdgeAttributes() {
 		Map map = super.createEdgeAttributes();
 		// Adds a parallel edge router
-		// GraphConstants.setLineStyle(map, GraphConstants.STYLE_SPLINE);
+		GraphConstants.setLineStyle(map, GraphConstants.STYLE_SPLINE);
 		if (GraphConstants.DEFAULTFONT != null) {
 			GraphConstants.setFont(map, GraphConstants.DEFAULTFONT
 					.deriveFont(10f));

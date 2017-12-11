@@ -1,5 +1,5 @@
 /*
- * $Id: JGraphGroupRenderer.java,v 1.1 2005-10-08 13:30:01 david Exp $
+ * $Id: JGraphGroupRenderer.java,v 1.1 2005/10/08 13:30:01 david Exp $
  * Copyright (c) 2001-2005, Gaudenz Alder
  * 
  * All rights reserved. 

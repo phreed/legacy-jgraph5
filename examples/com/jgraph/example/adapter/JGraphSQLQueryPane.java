@@ -1,5 +1,5 @@
 /*
- * $Id: JGraphSQLQueryPane.java,v 1.2 2007-08-18 10:20:11 david Exp $
+ * $Id: JGraphSQLQueryPane.java,v 1.2 2007/08/18 10:20:11 david Exp $
  * 
  * Copyright (c) 2001-2005, Gaudenz Alder
  * 

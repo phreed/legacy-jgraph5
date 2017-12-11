@@ -1,5 +1,5 @@
 /*
- * $Id: GraphEdXMenuBar.java,v 1.5 2005-12-07 19:44:09 gaudenz Exp $
+ * $Id: GraphEdXMenuBar.java,v 1.5 2005/12/07 19:44:09 gaudenz Exp $
  * Copyright (c) 2001-2005, Gaudenz Alder
  * 
  * All rights reserved. 

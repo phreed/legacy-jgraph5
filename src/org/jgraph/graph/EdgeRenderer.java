@@ -1,5 +1,5 @@
 /*
- * $Id: EdgeRenderer.java,v 1.25 2009-04-06 19:44:25 david Exp $ * 
+ * $Id: EdgeRenderer.java,v 1.25 2009/04/06 19:44:25 david Exp $ * 
  * Copyright (c) 2001-2007 Gaudenz Alder
  *  
  * See LICENSE file in distribution for licensing details of this source file

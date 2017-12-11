@@ -1,5 +1,5 @@
 /*
- * $Id: JGraphAdapterExample.java,v 1.4 2009-02-12 18:40:04 david Exp $
+ * $Id: JGraphAdapterExample.java,v 1.4 2009/02/12 18:40:04 david Exp $
  * 
  * Copyright (c) 2001-2005, Gaudenz Alder
  * 

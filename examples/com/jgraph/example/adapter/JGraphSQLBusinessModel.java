@@ -1,5 +1,5 @@
 /*
- * $Id: JGraphSQLBusinessModel.java,v 1.2 2005-08-09 08:40:47 david Exp $
+ * $Id: JGraphSQLBusinessModel.java,v 1.2 2005/08/09 08:40:47 david Exp $
  * 
  * Copyright (c) 2001-2005, Gaudenz Alder
  * 

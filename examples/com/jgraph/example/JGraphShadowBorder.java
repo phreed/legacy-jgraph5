@@ -1,5 +1,5 @@
 /*
- * $Id: JGraphShadowBorder.java,v 1.3 2005-11-25 15:53:11 david Exp $
+ * $Id: JGraphShadowBorder.java,v 1.3 2005/11/25 15:53:11 david Exp $
  * Copyright (c) 2001-2005, Gaudenz Alder
  * 
  * All rights reserved. 

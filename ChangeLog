@@ -1,64 +1,24 @@
-17-FEB-2010: JGraph 5.14.0.0
-
-- Introduce bridge to mxGraph (JGraphX).
-- Hierarchical layout from mxGraph now used in place of old hierarchical
-	via mxGraph bridge. Improves edge routing.
-
-31-MAR-2010: JGraph 5.13.0.4
-
-- Fixes Ant example build
-
-29-JAN-2010: JGraph 5.13.0.3
-
-- Checks JGraph isSelectionEnabled() on JTree select all event
-
-17-DEC-2009: JGraph 5.13.0.2
-
-- Removes ant dist build option and makes jar default
-
-14-OCT-2009: JGraph 5.13.0.1
-
-- Fixes refresh of graph when pressing escape during a drag
-
-25-SEP-2009: JGraph 5.13.0.0
-
-- Moved layout functionality into core JGraph package
-- Changed license to BSD
-
-24-SEP-2009: JGraph 5.12.4.2
-
-- Fixes JGraph.setPortsVisible() to always refresh
-
-12-AUG-2009: JGraph 5.12.4.1
-
-- Adds buffer to offscreen resize for less frequent allocations
-
-12-JUN-2009: JGraph 5.12.4.0
-
-- Added transaction API to graph model
-- Fix in BasicGraphUI for changing L&F
-
-06-APR-2009: JGraph 5.12.3.2
+06-APR-2008: JGraph 5.12.3.2
 
 - Edge renderer paint more granular
 - Adds refresh method to repaint entire graph
 
-25-FEB-2009: JGraph 5.12.3.1
+25-FEB-2008: JGraph 5.12.3.1
 
 - Fixes XML persistence for partial graph layout caches
 - Adds GraphLayoutCache.update method
 
-12-FEB-2009: JGraph 5.12.3.0
+12-FEB-2008: JGraph 5.12.3.0
 
 - Fixes highlight and preview for new edges in GraphEd
 - Fixes highlight and preview in EdgeView
 - Switches off D3D for all examples
 
-06-FEB-2009: JGraph 5.12.2.3
+06-FEB-2008: JGraph 5.12.2.3
 
 - Fixes cell view hit detection tolerance at high zoomed in levels
 
-05-JAN-2009: JGraph 5.12.2.2
+05-JAN-2008: JGraph 5.12.2.2
 
 - Adds EdgeRenderer.HIT_LABEL_EXACT switch for label hit detection
 - Redraws on setting grid invisible

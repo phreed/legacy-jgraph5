@@ -72,13 +72,6 @@ public class EdgeView extends AbstractCellView {
 
 	protected transient Rectangle2D cachedBounds = null;
 
-	/** Whether or not pre 5.12.3.3 disconnectable behaviour is to be used.
-	 *  This allowed an edge to reconnect to another vertex ever when
-	 *  isDisconnectable was false for the edge. Set to false
-	 *  with isDisconnectable set to false for the edge forbids 
-	 *  any disconnection. Default is true. */
-	public static boolean LEGACY_DISCONNECTABLE = true;
-
 	/**
 	 * Constructs an empty edge view.
 	 */
@@ -1222,38 +1215,15 @@ public class EdgeView extends AbstractCellView {
 			int y = event.getY();
 			// Detect hit on control point
 			int index = 0;
-			for (index = 0; index < r.length; index++)
-			{
-				if (r[index].contains(x, y))
-				{
-					if (EdgeView.LEGACY_DISCONNECTABLE)
-					{
-						currentPoint = edge.getPoint(index);
-						currentIndex = index;
-						source = index == 0;
-						target = index == r.length - 1;
-						break;
-					}
-					else
-					{
-						if ((index > 0 && index < r.length - 1)
-								|| GraphConstants.isDisconnectable(edge
-										.getAllAttributes()))
-						{
-							currentPoint = edge.getPoint(index);
-							currentIndex = index;
-							source = index == 0;
-							target = index == r.length - 1;
-							break;
-						}
-						else
-						{
-							event.consume();
-						}
-					}
+			for (index = 0; index < r.length; index++) {
+				if (r[index].contains(x, y)) {
+					currentPoint = edge.getPoint(index);
+					currentIndex = index;
+					source = index == 0;
+					target = index == r.length - 1;
+					break;
 				}
 			}
-			
 			// Detect hit on label
 			if (!isEditing() && graph.isMoveable()
 					&& GraphConstants.isMoveable(edge.getAllAttributes())

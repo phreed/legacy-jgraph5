@@ -1,5 +1,5 @@
 /*
- * $Id: RectUtils.java,v 1.2 2008-02-28 14:38:48 david Exp $
+ * $Id: RectUtils.java,v 1.2 2008/02/28 14:38:48 david Exp $
  *
  * Copyright (c) 2008 Gaudenz Alder
  *
