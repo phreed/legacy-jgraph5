@@ -2244,7 +2244,7 @@ public class BasicGraphUI extends GraphUI implements Serializable {
 			if (cells != null && cells.length > 0) {
 				Rectangle2D ret = null;
 				for (int i = 0; i < cells.length; i++) {
-					if (graphModel.isEdge(cells[i])) {
+					if (graphModel != null && graphModel.isEdge(cells[i])) {
 						CellView cellView = graphLayoutCache.getMapping(
 								cells[i], false);
 						if (cellView instanceof EdgeView) {

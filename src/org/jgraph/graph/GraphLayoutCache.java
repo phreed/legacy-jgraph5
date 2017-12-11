@@ -1,7 +1,7 @@
 /*
- * $Id: GraphLayoutCache.java,v 1.40 2009/02/13 14:26:41 gaudenz Exp $
+ * $Id: GraphLayoutCache.java,v 1.42 2009/08/12 11:39:37 david Exp $
  * 
- * Copyright (c) 2001-2008 Gaudenz Alder
+ * Copyright (c) 2001-2009 JGraph Ltd
  *  
  */
 package org.jgraph.graph;
@@ -953,7 +953,7 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 	}
 
 	/**
-	 * Removes the associaten for the specified model cell and returns the view
+	 * Removes the association for the specified model cell and returns the view
 	 * that was previously associated with the cell. Updates the portlist if
 	 * necessary.
 	 */
@@ -965,18 +965,33 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 		return null;
 	}
 
-	//
-	// Partial View
-	//
-	// Null is always visible!
+	/**
+	 * Whether or not the specified cell is visible.
+	 * NOTE: Your GraphLayoutCache must be <code>partial</code> (set 
+	 * <code>partial</code> to <code>true</code> in the constructor)
+	 * in order to use the visibility functionality of expand/collapse,
+	 * setVisible, etc.
+	 * null is always visible
+	 * 
+	 * @param cell the whose visibility to determine
+	 * @return whether or not the cell is visible
+	 */
 	public boolean isVisible(Object cell) {
 		return !isPartial() || visibleSet.contains(cell) || cell == null;
 	}
 
+	/**
+	 * Returns the set of visible sets in this view.
+	 * @return the set of visible sets in this view.
+	 */
 	public Set getVisibleSet() {
 		return new HashSet(visibleSet);
 	}
 
+	/**
+	 * Applies the specified set of cells as being those visible
+	 * @param visible the set of visible cells
+	 */
 	public void setVisibleSet(Set visible) {
 		visibleSet = visible;
 	}
@@ -984,6 +999,10 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 	/**
 	 * Makes the specified cell visible or invisible depending on the flag
 	 * passed in. Note the cell really is a cell, not a cell view.
+	 * NOTE: Your GraphLayoutCache must be <code>partial</code> (set 
+	 * <code>partial</code> to <code>true</code> in the constructor)
+	 * in order to use the visibility functionality of expand/collapse,
+	 * setVisible, etc.
 	 * 
 	 * @param cell
 	 *            the cell whose visibility is to be changed
@@ -997,6 +1016,10 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 	/**
 	 * Makes the specified cells visible or invisible depending on the flag
 	 * passed in. Note the cells really are cells, not cell views.
+	 * NOTE: Your GraphLayoutCache must be <code>partial</code> (set 
+	 * <code>partial</code> to <code>true</code> in the constructor)
+	 * in order to use the visibility functionality of expand/collapse,
+	 * setVisible, etc.
 	 * 
 	 * @param cells
 	 *            the cells whose visibility is to be changed
@@ -1013,6 +1036,10 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 	/**
 	 * Changes the visibility state of the cells passed in. Note that the arrays
 	 * must contain cells, not cell views.
+	 * NOTE: Your GraphLayoutCache must be <code>partial</code> (set 
+	 * <code>partial</code> to <code>true</code> in the constructor)
+	 * in order to use the visibility functionality of expand/collapse,
+	 * setVisible, etc.
 	 * 
 	 * @param visible
 	 *            cells to be made visible
@@ -1026,7 +1053,11 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 	/**
 	 * Changes the visibility state of the cells passed in. Note that the arrays
 	 * must contain cells, not cell views.
-	 * 
+	 * NOTE: Your GraphLayoutCache must be <code>partial</code> (set 
+	 * <code>partial</code> to <code>true</code> in the constructor)
+	 * in order to use the visibility functionality of expand/collapse,
+	 * setVisible, etc.
+	 *
 	 * @param visible
 	 *            cells to be made visible
 	 * @param invisible
@@ -1043,6 +1074,10 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 	/**
 	 * Changes the visibility state of the cells passed in. Note that the arrays
 	 * must contain cells, not cell views.
+	 * NOTE: Your GraphLayoutCache must be <code>partial</code> (set 
+	 * <code>partial</code> to <code>true</code> in the constructor)
+	 * in order to use the visibility functionality of expand/collapse,
+	 * setVisible, etc.
 	 * 
 	 * @param visible
 	 *            cells to be made visible
@@ -1134,6 +1169,11 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 	 * However, if you do not require the undo to be formed, this method is much
 	 * quicker, just note that you must call <code>updatePorts</code> if this
 	 * method returns true.
+	 * 
+	 * NOTE: Your GraphLayoutCache must be <code>partial</code> (set 
+	 * <code>partial</code> to <code>true</code> in the constructor)
+	 * in order to use the visibility functionality of expand/collapse,
+	 * setVisible, etc.
 	 * 
 	 * @param cells
 	 * @param visible
@@ -1571,6 +1611,10 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 	/**
 	 * Hides the specified cells with all children if <code>descandants</code>
 	 * is true.
+	 * NOTE: Your GraphLayoutCache must be <code>partial</code> (set 
+	 * <code>partial</code> to <code>true</code> in the constructor)
+	 * in order to use the visibility functionality of expand/collapse,
+	 * setVisible, etc.
 	 */
 	public void hideCells(Object[] cells, boolean descandants) {
 		if (cells != null && cells.length > 0) {
@@ -1584,6 +1628,10 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 	/**
 	 * Shows the specified cells with all children if <code>descandants</code>
 	 * is true.
+	 * NOTE: Your GraphLayoutCache must be <code>partial</code> (set 
+	 * <code>partial</code> to <code>true</code> in the constructor)
+	 * in order to use the visibility functionality of expand/collapse,
+	 * setVisible, etc.
 	 */
 	public void showCells(Object[] cells, boolean descandants) {
 		if (cells != null && cells.length > 0) {
@@ -1631,6 +1679,10 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 
 	/**
 	 * Toggles the collapsed state of the specified cells.
+	 * NOTE: Your GraphLayoutCache must be <code>partial</code> (set 
+	 * <code>partial</code> to <code>true</code> in the constructor)
+	 * in order to use the visibility functionality of expand/collapse,
+	 * setVisible, etc.
 	 * 
 	 * @param cells
 	 *            The cells to toggle the collapsed state for.
@@ -1666,6 +1718,10 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 
 	/**
 	 * Collapses all groups by hiding all their descendants.
+	 * NOTE: Your GraphLayoutCache must be <code>partial</code> (set 
+	 * <code>partial</code> to <code>true</code> in the constructor)
+	 * in order to use the visibility functionality of expand/collapse,
+	 * setVisible, etc.
 	 * 
 	 * @param groups
 	 */
@@ -1676,6 +1732,10 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 	/**
 	 * Expands all groups by showing all children. (Note: This does not show all
 	 * descandants, but only the first generation of children.)
+	 * NOTE: Your GraphLayoutCache must be <code>partial</code> (set 
+	 * <code>partial</code> to <code>true</code> in the constructor)
+	 * in order to use the visibility functionality of expand/collapse,
+	 * setVisible, etc.
 	 */
 	public void expand(Object[] cells) {
 		setCollapsedState(null, cells);
@@ -1683,6 +1743,10 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 
 	/**
 	 * Collapses and/or expands the specified cell(s)
+	 * NOTE: Your GraphLayoutCache must be <code>partial</code> (set 
+	 * <code>partial</code> to <code>true</code> in the constructor)
+	 * in order to use the visibility functionality of expand/collapse,
+	 * setVisible, etc.
 	 * 
 	 * @param collapse
 	 *            the cells to be collapsed
@@ -2654,6 +2718,11 @@ public class GraphLayoutCache implements CellMapper, Serializable {
 
 	/**
 	 * Sets the hiddenSet.
+	 * 
+	 * NOTE: Your GraphLayoutCache must be <code>partial</code> (set 
+	 * <code>partial</code> to <code>true</code> in the constructor)
+	 * in order to use the visibility functionality of expand/collapse,
+	 * setVisible, etc.
 	 * 
 	 * @param hiddenSet
 	 *            The hiddenSet to set

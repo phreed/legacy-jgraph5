@@ -197,6 +197,7 @@ public class ConnectionSet implements Serializable {
 
 	/**
 	 * Returns a <code>Set</code> for the edges in this connection set.
+	 * @deprecated Use getEdges
 	 */
 	public Set getChangedEdges() {
 		return edges;

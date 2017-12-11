@@ -1,7 +1,7 @@
 /*
- * $Id: JGraph.java,v 1.92 2009/04/06 18:43:24 david Exp $
+ * $Id: JGraph.java,v 1.96 2009/09/24 13:54:11 david Exp $
  *
- * Copyright (c) 2001-2008 Gaudenz Alder
+ * Copyright (c) 2001-2009 JGraph Ltd
  *
  */
 package org.jgraph;
@@ -41,11 +41,9 @@ import javax.swing.JViewport;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
-import org.jgraph.event.GraphModelEvent;
 import org.jgraph.event.GraphSelectionEvent;
 import org.jgraph.event.GraphSelectionListener;
 import org.jgraph.event.GraphLayoutCacheEvent.GraphLayoutCacheChange;
-import org.jgraph.event.GraphModelEvent.GraphModelChange;
 import org.jgraph.graph.AbstractCellView;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.BasicMarqueeHandler;
@@ -182,7 +180,7 @@ import org.jgraph.plaf.basic.BasicGraphUI;
  */
 public class JGraph extends JComponent implements Scrollable, Accessible, Serializable {
 
-	public static final String VERSION = "JGraph (v5.12.3.2)";
+	public static final String VERSION = "JGraph (v5.13.0.0)";
 
 	public static final int DOT_GRID_MODE = 0;
 
@@ -259,10 +257,11 @@ public class JGraph extends JComponent implements Scrollable, Accessible, Serial
 
 	/**
 	 * The buffer around the offscreen graphics object that provides the
-	 * specified distance of scrolling before the buffer has to be redrawn.
-	 * Increasing the value means fewer redraws but more memory is required.
+	 * specified distance of scrolling before the buffer has to be recreated.
+	 * Increasing the value means fewer buffer allocations but more
+	 * memory usage for the current buffer
 	 */
-	protected transient int offscreenBuffer = 0;
+	protected transient int offscreenBuffer = 300;
 	
 	/**
 	 * Whether or not to try to use a volatile offscreen buffer for double
@@ -1917,6 +1916,10 @@ public class JGraph extends JComponent implements Scrollable, Accessible, Serial
 	public void setPortsVisible(boolean flag) {
 		boolean oldValue = portsVisible;
 		portsVisible = flag;
+		// Clear the double buffer if the grid has been enabled
+		if (flag != oldValue) {
+			clearOffscreen();
+		}
 		firePropertyChange(PORTS_VISIBLE_PROPERTY, oldValue, flag);
 	}
 
@@ -2067,53 +2070,31 @@ public class JGraph extends JComponent implements Scrollable, Accessible, Serial
 		}
 		// Get the bounds of the entire graph
 		Rectangle2D graphBounds = getBounds();
-		// Get the visible area if in a scroll pane
-		Rectangle2D viewPortBounds = null;//getViewPortBounds();
-		// The result can be null if not a view port.
-		if (viewPortBounds == null) {
-			viewPortBounds = graphBounds;
-		}
 		// Find the size of the double buffer in the JVM
 		int x = Math
-				.max(0, (int) viewPortBounds.getX() - (int) offscreenBuffer);
+				.max(0, (int) graphBounds.getX());
 		int y = Math
-				.max(0, (int) viewPortBounds.getY() - (int) offscreenBuffer);
-		int width = (int) viewPortBounds.getWidth() + (int) offscreenBuffer * 2;
-		int height = (int) viewPortBounds.getHeight() + (int) offscreenBuffer
-				* 2;
-		// Code below used to work out max possible screen size, might not
-		// be needed in JVM 1.6?
-		//		try {
-		//		Rectangle virtualBounds = new Rectangle();
-		//		GraphicsEnvironment ge = GraphicsEnvironment
-		//		.getLocalGraphicsEnvironment();
-		//		GraphicsDevice[] devices = ge.getScreenDevices();
-		//		for (int i = 0; i < devices.length; i++) {
-		//		GraphicsConfiguration gc = devices[i].getDefaultConfiguration();
-		//		virtualBounds = virtualBounds.union(gc.getBounds());
-		//		}
-		//		doubleBufferSize = new Dimension(virtualBounds.width,
-		//		virtualBounds.height);
-		//		} catch (HeadlessException e) {
-		//		doubleBufferSize = new Dimension((int) graphBounds.getWidth(), (int)
-		//		graphBounds
-		//		.getHeight());
-		//		}
-		// If the screen size exceed either of the graph dimensions, limit them
-		// to the graph's
-		if (width > graphBounds.getWidth()) {
-			width = (int) graphBounds.getWidth();
-		}
-		if (height > graphBounds.getHeight()) {
-			height = (int) graphBounds.getHeight();
-		}
+				.max(0, (int) graphBounds.getY());
+		int width = (int) graphBounds.getWidth();
+		int height = (int) graphBounds.getHeight();
 
-		Rectangle2D newOffscreenBuffer = new Rectangle2D.Double(0, 0, width,
-				height);
+		boolean offScreenNeedsExtending = true;
+		Rectangle2D newOffscreenBuffer = new Rectangle2D.Double(0, 0, width, height);
+		if (offscreenBounds != null)
+		{
+			offScreenNeedsExtending = !(offscreenBounds
+					.contains(newOffscreenBuffer));
+			if (offScreenNeedsExtending)
+			{
+				width += offscreenBuffer;
+				height += offscreenBuffer;
+				newOffscreenBuffer = new Rectangle2D.Double(0, 0, width, height);
+			}
+		}
 		// Check whether the visible area is completely contained within the
 		// buffer. If not, the buffer need to be re-generated
 		if ((offscreen == null || offgraphics == null || offscreenBounds == null)
-				|| !(offscreenBounds.contains(newOffscreenBuffer))) {
+				|| offScreenNeedsExtending) {
 			if (offscreen != null) {
 				offscreen.flush();
 			}

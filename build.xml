@@ -2,7 +2,7 @@
 
  @(#)build.xml	1.0 03-JUL-04
 
- Copyright (c) 2001-2008 Gaudenz Alder
+ Copyright (c) 2001-2009 JGraph Ltd
 
 -->
 
@@ -12,8 +12,8 @@
 
 	<property name="app.name"       value="JGraph"/>
 	<property name="app.jar"       	value="jgraph.jar"/>
-	<property name="app.version"    value="5.12.3.2"/>
-	<property name="longversion"    value="5.12.3.2"/>
+	<property name="app.version"    value="5.13.0.0"/>
+	<property name="longversion"    value="5.13.0.0"/>
 
 <!-- ===================== Project Environment =========================== -->
 
@@ -92,7 +92,7 @@
 		<copy todir="${build.home}/doc">
 			<fileset dir="${basedir}/doc" includes="**/*"/>
 		</copy>
-		<javadoc packagenames="org.jgraph.*"
+		<javadoc packagenames="org.jgraph.*,com.jgraph.*"
 				 sourcepath="${build.home}/src"
 				 classpath="${build.home}/classes" 
 				 destdir="${build.home}/doc/api"
@@ -102,8 +102,8 @@
 				 windowtitle="${app.name} v${app.version} API Specification"
 				 doctitle="${app.name} v${app.version} API Specification">
 			<header><![CDATA[<p><b>${app.name}</b><br>v${app.version}</p>]]></header>
-			<bottom><![CDATA[<font size=1>Copyright (C) 2001-2008 <a href="http://www.jgraph.com/"
-				target="_blank">Gaudenz Alder</a>. All rights reserved.</font>]]></bottom>
+			<bottom><![CDATA[<font size=1>Copyright (C) 2001-2009 <a href="http://www.jgraph.com/"
+				target="_blank">JGraph Ltd</a>. All rights reserved.</font>]]></bottom>
 		    <link href="http://java.sun.com/j2se/${java.specification.version}/docs/api"/>
 		</javadoc>
 	</target>
@@ -140,7 +140,6 @@
 	  	<copy file="${basedir}/ChangeLog" todir="${dist.home}/${dist.name}"/>
 	  	<copy file="${basedir}/LICENSE" todir="${dist.home}/${dist.name}"/>
 	  	<copy file="${basedir}/README" todir="${dist.home}/${dist.name}"/>
-		<copy file="${basedir}/WHATSNEW" todir="${dist.home}/${dist.name}"/>
 		<copy file="${build.home}/lib/${app.jar}" todir="${dist.home}/${dist.name}/lib"/>
 
 		<copy todir="${dist.home}/${dist.name}/doc">
