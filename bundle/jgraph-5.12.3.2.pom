@@ -1,0 +1,39 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.babeloff</groupId>
+  <artifactId>jgraph</artifactId>
+  <version>5.12.3.2</version>
+  <packaging>jar</packaging>
+ 
+  <name>JGraph</name>
+  <description>Java Graph Visualization and Layout component</description>
+  <url>http://www.jgraph.com</url>
+ 
+  <licenses>
+    <license>
+      <name>BSD 2-Clause</name>
+      <url>https://opensource.org/licenses/BSD-2-Clause</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+ 
+  <scm>
+    <url>https://github.com/jgraph/legacy-jgraph5</url>
+  </scm>
+
+  <developers>
+    <developer>
+      <id>dbenson</id>
+      <name>David Benson</name>
+      <email>dbenson@jgraph.com</email>
+      <url>https://github.com/jgraph/legacy-jgraph5</url>
+      <organization>JGraph</organization>
+      <organizationUrl>http://jgraph.com</orginaization>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </developer>
+  </developers>
+ 
+</project>
+
