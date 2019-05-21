@@ -17,23 +17,16 @@
     </license>
   </licenses>
  
-  <scm>
-    <url>https://github.com/jgraph/legacy-jgraph5</url>
-  </scm>
-
   <developers>
     <developer>
       <id>dbenson</id>
       <name>David Benson</name>
-      <email>dbenson@jgraph.com</email>
-      <url>https://github.com/jgraph/legacy-jgraph5</url>
-      <organization>JGraph</organization>
-      <organizationUrl>http://jgraph.com</orginaization>
-      <roles>
-        <role>developer</role>
-      </roles>
     </developer>
   </developers>
  
+  <scm>
+    <url>https://github.com/jgraph/legacy-jgraph5</url>
+  </scm>
+
 </project>
 
